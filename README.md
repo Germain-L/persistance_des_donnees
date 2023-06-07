@@ -1,4 +1,7 @@
 # Application de Gestion de Bibliothèque
+Projet de : 
+- [x] **Germain LEIGNEL**
+- [x] **Marco-Olivier CAS**
 
 Cette application web de gestion de bibliothèque est construite en utilisant Symfony et les templates Twig. L'application vous permet de gérer diverses entités telles que `Adherent`, `Auteur`, `Categorie`, `Emprunt`, et `Livre`. Chaque entité comprend un ensemble d'opérations comme `Créer`, `Lire`, `Mettre à jour`, et `Supprimer`.
 
