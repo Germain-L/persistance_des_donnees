@@ -1,21 +1,35 @@
-version: '3'
-
 services:
-###> doctrine/doctrine-bundle ###
-  database:
-    image: postgres:${POSTGRES_VERSION:-15}-alpine
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
+      MYSQL_ROOT_PASSWORD: persistance
+    ports:
+      - "3306:3306"
     volumes:
-      - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+      - mysql-data:/var/lib/mysql
+      - "./init.sql:/docker-entrypoint-initdb.d/init.sql"
+
+  adminer:
+    image: adminer
+    container_name: adminer-container
+    depends_on:
+      - mysql
+    ports:
+      - "8081:8080"
+    restart: always
+
+  symfony:
+    build: .
+    container_name: symfony-container
+    volumes:
+      - .:/var/www
+    ports:
+      - "8000:80"
+    depends_on:
+      - mysql
+    environment:
+      - DATABASE_URL=mysql://root:persistance@mysql:3306/persistance
 
 volumes:
-###> doctrine/doctrine-bundle ###
-  database_data:
-###< doctrine/doctrine-bundle ###
+  mysql-data:
