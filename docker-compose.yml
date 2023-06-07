@@ -19,17 +19,5 @@ services:
       - "8081:8080"
     restart: always
 
-  symfony:
-    build: .
-    container_name: symfony-container
-    volumes:
-      - .:/var/www
-    ports:
-      - "8000:80"
-    depends_on:
-      - mysql
-    environment:
-      - DATABASE_URL=mysql://root:persistance@mysql:3306/persistance
-
 volumes:
   mysql-data:
